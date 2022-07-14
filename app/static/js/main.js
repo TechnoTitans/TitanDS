@@ -128,10 +128,6 @@ function stopDrawing() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     background();
     joystick(width / 2, height / 3);
-    this.x = 0
-    this.y = 0
-    this.speed = 0
-    this.angle = 0
     send(0, 0, 0, 0);
 }
 
@@ -169,11 +165,6 @@ function Draw(event) {
 
         var x_relative = Math.round(x - x_orig);
         var y_relative = Math.round(y - y_orig);
-
-        this.x = x_relative;
-        this.y = y_relative;
-        this.speed = speed;
-        this.angle = angle_in_degrees;
 
         send(x_relative, y_relative, speed, angle_in_degrees);
     }
