@@ -29,7 +29,7 @@
         </div>
 
         <div class="col-md-6 quarter br">
-            <input class="input-range" orient="vertical" style="transform: rotate(270deg);" type="range" step="0.1" value="0" min="-1" max="1">
+            <input id="tiltSlider" class="input-range" orient="vertical" style="transform: rotate(270deg); margin-left: -5%; width: 160px" type="range" step="0.1" value="0" min="-1" max="1" onchange="onSliderChange(document.getElementById('tiltSlider'))" oninput="currentSliderVal(document.getElementById('tiltSlider'))">
             <button type="button" class="btn btn-danger btn-super-xl" id="shootbtn" onclick="onshootbtn(document.getElementById('shootbtn'))"><b>SHOOT</b></button>
         </div>
     </div>

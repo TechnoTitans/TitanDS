@@ -19,10 +19,11 @@ def send():
         table = NetworkTables.getTable("titandrive")
 
         data = dict(request.get_json())
+        print(data)
 
         table.putNumber("x", data["x"])
         table.putNumber("y", data["y"])
-        table.putNumber("angle", data["angle"])
+        table.putNumber("tiltangle", data["tiltangle"])
         table.putBoolean("shoot", data["shoot"])
         table.putBoolean("disabled", data["disabled"])
 

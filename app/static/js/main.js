@@ -1,13 +1,13 @@
 let disable = false;
 let shootnow = false;
 let shootBtn;
+let sliderpos = 0;
 
-async function send(x, y, speed, angle) {
-    var data = {
+async function send(x, y, tilt) {
+    let data = {
         x: x,
         y: y,
-        speed: speed,
-        angle: angle,
+        tiltangle: tilt,
         shoot: shootnow,
         disabled: disable
     };
@@ -37,6 +37,36 @@ window.addEventListener("click", function(e) {
     document.documentElement.requestFullscreen({"navigationUI": "hide"}).catch(err => { alert(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`) });
   }
 });
+
+function onSliderChange(slider) {
+    slider.value = 0
+    sliderpos = 0;
+}
+
+function currentSliderVal(slider) {
+    sliderpos = slider.value
+    let x, y;
+    let angle = Math.atan2((coord.y - y_orig), (coord.x - x_orig));
+
+    if (Math.abs(coord.x) >= 600) {
+        x = 0
+        y = 0
+    } else if (is_it_in_the_circle()) {
+        x = coord.x;
+        y = coord.y;
+    }
+    else {
+        x = radius * Math.cos(angle) + x_orig;
+        y = radius * Math.sin(angle) + y_orig;
+    }
+
+
+    let x_relative = Math.round(x_orig - x);
+    let y_relative = Math.round(y_orig - y);
+    if (x_relative === 448 && y_relative === 163) {
+        send(0, 0, sliderpos);
+    }
+}
 
 function ontoggleRobotbtn(btn) {
     if (disable) {
@@ -69,7 +99,7 @@ screen.orientation.addEventListener("change", async () => {
     }
 });
 
-var canvas, ctx;
+let canvas, ctx;
 window.addEventListener('load', () => {
 
     if (!screen.orientation.type.toLowerCase().includes("landscape")) {
@@ -94,7 +124,7 @@ window.addEventListener('load', () => {
 
 });
 
-var width, height, radius, x_orig, y_orig;
+let width, height, radius, x_orig, y_orig;
 function resize() {
     width = window.innerWidth;
     radius = 75;
@@ -130,17 +160,16 @@ let paint = false;
 
 function getPosition(event) {
     if (event != null) {
-        var mouse_x = event.clientX || event.touches[0].clientX;
-        var mouse_y = event.clientY || event.touches[0].clientY;
+        let mouse_x = event.clientX || event.touches[0].clientX;
+        let mouse_y = event.clientY || event.touches[0].clientY;
         coord.x = mouse_x - canvas.offsetLeft;
         coord.y = mouse_y - canvas.offsetTop;
     }
 }
 
 function is_it_in_the_circle() {
-    var current_radius = Math.sqrt(Math.pow(coord.x - x_orig, 2) + Math.pow(coord.y - y_orig, 2));
-    if (radius >= current_radius) return true
-    else return false
+    let current_radius = Math.sqrt(Math.pow(coord.x - x_orig, 2) + Math.pow(coord.y - y_orig, 2));
+    return radius >= current_radius
 }
 
 
@@ -161,7 +190,7 @@ function stopDrawing() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     background();
     joystick(width / 2, height / 3);
-    send(0, 0, 0, 0);
+    send(0, 0, 0, false, false);
 }
 
 function Draw(event) {
@@ -169,18 +198,13 @@ function Draw(event) {
     if (paint) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         background();
-        var angle_in_degrees,x, y, speed;
-        var angle = Math.atan2((coord.y - y_orig), (coord.x - x_orig));
+        let x, y;
+        let angle = Math.atan2((coord.y - y_orig), (coord.x - x_orig));
 
-        if (Math.sign(angle) == -1) {
-            angle_in_degrees = Math.round(-angle * 180 / Math.PI);
-        }
-        else {
-            angle_in_degrees =Math.round( 360 - angle * 180 / Math.PI);
-        }
-
-
-        if (is_it_in_the_circle()) {
+        if (Math.abs(coord.x) >= 600) {
+            joystick(x_orig, y_orig);
+            return;
+        } else if (is_it_in_the_circle()) {
             joystick(coord.x, coord.y);
             x = coord.x;
             y = coord.y;
@@ -191,14 +215,10 @@ function Draw(event) {
             joystick(x, y);
         }
 
-
         getPosition(event);
 
-        var speed =  Math.round(100 * Math.sqrt(Math.pow(x_orig - x, 2) + Math.pow(y_orig - y, 2)) / radius);
-
-        var x_relative = Math.round(x_orig - x);
-        var y_relative = Math.round(y_orig - y);
-
-        send(x_relative, y_relative, speed, angle_in_degrees);
+        let x_relative = Math.round(x_orig - x);
+        let y_relative = Math.round(y_orig - y);
+        send(x_relative, y_relative, sliderpos);
     }
 }
