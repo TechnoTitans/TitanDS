@@ -48,7 +48,7 @@ function currentSliderVal(slider) {
     let x, y;
     let angle = Math.atan2((coord.y - y_orig), (coord.x - x_orig));
 
-    if (Math.abs(coord.x) >= 600) {
+    if (Math.abs(coord.x) >= 800) {
         x = 0
         y = 0
     } else if (is_it_in_the_circle()) {
@@ -60,12 +60,7 @@ function currentSliderVal(slider) {
         y = radius * Math.sin(angle) + y_orig;
     }
 
-
-    let x_relative = Math.round(x_orig - x);
-    let y_relative = Math.round(y_orig - y);
-    if (x_relative === 448 && y_relative === 163) {
-        send(0, 0, sliderpos);
-    }
+    send(0, 0, sliderpos);
 }
 
 function ontoggleRobotbtn(btn) {
@@ -95,7 +90,7 @@ async function onshootbtn(btn) {
 document.addEventListener('contextmenu', event => event.preventDefault());
 
 screen.orientation.addEventListener("change", async () => {
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 600));
     if (!screen.orientation.type.toLowerCase().includes("landscape")) {
         location.reload();
     }
@@ -203,7 +198,7 @@ function Draw(event) {
         let x, y;
         let angle = Math.atan2((coord.y - y_orig), (coord.x - x_orig));
 
-        if (Math.abs(coord.x) >= 600) {
+        if (Math.abs(coord.x) >= 800) {
             joystick(x_orig, y_orig);
             return;
         } else if (is_it_in_the_circle()) {
