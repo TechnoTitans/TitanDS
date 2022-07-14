@@ -39,9 +39,18 @@ html, body {
 }
 
 .bl{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 15%;
+      padding-right: 9%;
+
+}
+
+.br{
       position: relative;
-      left: 10%;
-      top: 20%;
+      left: 19%;
+      top: 23%;
 }
 
 .btn-super-xl{
@@ -49,12 +58,4 @@ html, body {
       border-radius: 10px;
       width: 55%;
       height: 55%;
-}
-
-.br{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-top: 12.5%;
-      padding-left: 4.5%;
 }

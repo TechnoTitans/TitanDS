@@ -21,15 +21,16 @@
         </div>
 
         <div class="col-md-6 quarter tr">
-            <button type="button" class="btn btn-success btn-xl">Enabled</button>
+            <button type="button" class="btn btn-success btn-xl" id="toggleRobotbtn" onclick="ontoggleRobotbtn(document.getElementById('toggleRobotbtn'))">Enabled</button>
         </div>
 
         <div class="col-md-6 quarter bl">
-            <button type="button" class="btn btn-danger btn-super-xl"><b>SHOOT</b></button>
+            <canvas id="joystick"></canvas>
+{#            <canvas id="tiltstick"></canvas>#}
         </div>
 
         <div class="col-md-6 quarter br">
-            <canvas id="joystick"></canvas>
+            <button type="button" class="btn btn-danger btn-super-xl" id="shootbtn" onclick="onshootbtn(document.getElementById('shootbtn'))"><b>SHOOT</b></button>
         </div>
     </div>
 </body>

@@ -1,9 +1,15 @@
-function send(x, y, speed, angle) {
+let disable = false;
+let shootnow = false;
+let shootBtn;
+
+async function send(x, y, speed, angle) {
     var data = {
         x: x,
         y: y,
         speed: speed,
-        angle: angle
+        angle: angle,
+        shoot: shootnow,
+        disabled: disable
     };
 
     $.ajax({
@@ -12,12 +18,17 @@ function send(x, y, speed, angle) {
         dataType: 'json',
         data: JSON.stringify(data),
         type: "POST",
-        success : function(result) {
+        success: function (result) {
             //it worked
-        }, error : function(result){
-           // console.log(result); Returns some stuff but idk what it means
+        }, error: function (result) {
+            // console.log(result); Returns some stuff but idk what it means
         }
     });
+
+    if (shootnow) {
+        shootnow = false;
+        shootBtn.classList.remove("disabled")
+    }
 }
 
 window.addEventListener("click", function(e) {
@@ -26,6 +37,28 @@ window.addEventListener("click", function(e) {
     document.documentElement.requestFullscreen({"navigationUI": "hide"}).catch(err => { alert(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`) });
   }
 });
+
+function ontoggleRobotbtn(btn) {
+    if (disable) {
+        disable = false;
+        btn.innerHTML = "Disabled"
+        btn.classList.remove("btn-success");
+        btn.classList.add("btn-danger");
+    } else {
+        disable = true;
+        btn.innerHTML = "Enabled"
+        btn.classList.remove("btn-danger");
+        btn.classList.add("btn-success");
+    }
+};
+
+async function onshootbtn(btn) {
+    if (!shootnow) {
+        shootnow = true;
+        btn.classList.add("disabled");
+        shootBtn = btn;
+    }
+};
 
 document.addEventListener('contextmenu', event => event.preventDefault());
 
@@ -46,6 +79,7 @@ window.addEventListener('load', () => {
     }
 
     canvas = document.getElementById('joystick');
+    // canvas2 = document.getElementById('tiltstick');
     ctx = canvas.getContext('2d');
     resize();
 
@@ -161,10 +195,10 @@ function Draw(event) {
 
         getPosition(event);
 
-        var speed =  Math.round(100 * Math.sqrt(Math.pow(x - x_orig, 2) + Math.pow(y - y_orig, 2)) / radius);
+        var speed =  Math.round(100 * Math.sqrt(Math.pow(x_orig - x, 2) + Math.pow(y_orig - y, 2)) / radius);
 
-        var x_relative = Math.round(x - x_orig);
-        var y_relative = Math.round(y - y_orig);
+        var x_relative = Math.round(x_orig - x);
+        var y_relative = Math.round(y_orig - y);
 
         send(x_relative, y_relative, speed, angle_in_degrees);
     }
