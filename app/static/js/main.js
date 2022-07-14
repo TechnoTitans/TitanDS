@@ -69,17 +69,19 @@ function currentSliderVal(slider) {
 }
 
 function ontoggleRobotbtn(btn) {
-    if (!disable) {
+    if (disable) {
         disable = false;
-        btn.innerHTML = "Disabled"
-        btn.classList.remove("btn-success");
-        btn.classList.add("btn-danger");
-    } else {
-        disable = true;
         btn.innerHTML = "Enabled"
         btn.classList.remove("btn-danger");
         btn.classList.add("btn-success");
+
+    } else {
+        disable = true;
+        btn.innerHTML = "Disabled"
+        btn.classList.remove("btn-success");
+        btn.classList.add("btn-danger");
     }
+    console.log(disable)
 };
 
 async function onshootbtn(btn) {
