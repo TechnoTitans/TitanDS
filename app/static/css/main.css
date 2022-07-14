@@ -1,0 +1,60 @@
+html, body {
+      background: dodgerblue;
+      overflow: hidden;
+      position: fixed;
+      height:100%;
+      min-height:100%;
+      touch-action: manipulation;
+      user-select: none;
+      -moz-user-select: none;
+}
+
+.quarter{
+      width:50%;
+      height:100%;
+      float:left;
+}
+.contents{
+      height:50%;
+      width:100%;
+}
+
+.tl{
+      position: relative;
+      top: 25%;
+      left: 10%;
+}
+
+.tr{
+      position: relative;
+      top: 15%;
+      left: 18%;
+}
+
+.btn-xl{
+      font-size: 30px;
+      border-radius: 10px;
+      width: 35%;
+      height: 35%;
+}
+
+.bl{
+      position: relative;
+      left: 10%;
+      top: 20%;
+}
+
+.btn-super-xl{
+      font-size: 47px;
+      border-radius: 10px;
+      width: 55%;
+      height: 55%;
+}
+
+.br{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 12.5%;
+      padding-left: 4.5%;
+}
