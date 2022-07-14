@@ -15,7 +15,7 @@ def index():
 @app.route("/data", methods=['POST'])
 def send():
     try:
-        NetworkTables.initialize(server="192.168.1.245")
+        NetworkTables.initialize(server="10.16.83.2")
         table = NetworkTables.getTable("titandrive")
 
         data = dict(request.get_json())
