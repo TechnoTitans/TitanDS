@@ -12,7 +12,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/send", methods=['POST'])
+@app.route("/data", methods=['POST'])
 def send():
     try:
         NetworkTables.initialize(server="10.16.83.2")

@@ -13,7 +13,7 @@ async function send(x, y, tilt) {
     };
 
     $.ajax({
-        url: "/send",
+        url: "/data",
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify(data),
