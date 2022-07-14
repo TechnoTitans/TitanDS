@@ -69,7 +69,7 @@ function currentSliderVal(slider) {
 }
 
 function ontoggleRobotbtn(btn) {
-    if (disable) {
+    if (!disable) {
         disable = false;
         btn.innerHTML = "Disabled"
         btn.classList.remove("btn-success");
