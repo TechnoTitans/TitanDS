@@ -79,7 +79,6 @@ window.addEventListener('load', () => {
     }
 
     canvas = document.getElementById('joystick');
-    // canvas2 = document.getElementById('tiltstick');
     ctx = canvas.getContext('2d');
     resize();
 
