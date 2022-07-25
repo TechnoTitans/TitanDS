@@ -3,17 +3,38 @@ let shootnow = false;
 let shootBtn;
 let sliderpos = 0;
 
-async function send(x, y, tilt) {
+async function sendDrive(x) {
     let data = {
         x: x,
         y: y,
-        tiltangle: tilt,
-        shoot: shootnow,
-        disabled: disable
     };
 
     $.ajax({
-        url: "/data",
+        url: "/drive",
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(data),
+        type: "POST",
+        success: function (result) {
+            //it worked
+        }, error: function (result) {
+            // console.log(result); Returns some stuff but idk what it means
+        }
+    });
+
+    // if (shootnow) {
+        // shootnow = false;
+        // shootBtn.classList.remove("disabled")
+    // }
+}
+
+async function sendShoot(shootnow) {
+    let data = {
+        shoot: shootnow,
+    };
+
+    $.ajax({
+        url: "/shoot",
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify(data),
@@ -31,6 +52,54 @@ async function send(x, y, tilt) {
     }
 }
 
+async function sendTilt(tilt) {
+    let data = {
+        tiltangle: tilt,
+    };
+
+    $.ajax({
+        url: "/tilt",
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(data),
+        type: "POST",
+        success: function (result) {
+            //it worked
+        }, error: function (result) {
+            // console.log(result); Returns some stuff but idk what it means
+        }
+    });
+
+    // if (shootnow) {
+        // shootnow = false;
+        // shootBtn.classList.remove("disabled")
+    // }
+}
+
+async function sendMode(disable) {
+    let data = {
+        disabled: disable
+    };
+
+    $.ajax({
+        url: "/mode",
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(data),
+        type: "POST",
+        success: function (result) {
+            //it worked
+        }, error: function (result) {
+            // console.log(result); Returns some stuff but idk what it means
+        }
+    });
+
+    // if (shootnow) {
+        // shootnow = false;
+        // shootBtn.classList.remove("disabled")
+    // }
+}
+
 window.addEventListener("click", function(e) {
   // Make page to full screen to allow app to fit
   if (!document.fullscreenElement) { // remove one ! for later
@@ -45,22 +114,23 @@ function onSliderChange(slider) {
 
 function currentSliderVal(slider) {
     sliderpos = slider.value
-    let x, y;
-    let angle = Math.atan2((coord.y - y_orig), (coord.x - x_orig));
+    // ***** I dont think we need this anymore ******* 
+    // let x, y;
+    // let angle = Math.atan2((coord.y - y_orig), (coord.x - x_orig));
 
-    if (Math.abs(coord.x) >= 800) {
-        x = 0
-        y = 0
-    } else if (is_it_in_the_circle()) {
-        x = coord.x;
-        y = coord.y;
-    }
-    else {
-        x = radius * Math.cos(angle) + x_orig;
-        y = radius * Math.sin(angle) + y_orig;
-    }
+    // if (Math.abs(coord.x) >= 800) {
+    //     x = 0
+    //     y = 0
+    // } else if (is_it_in_the_circle()) {
+    //     x = coord.x;
+    //     y = coord.y;
+    // }
+    // else {
+    //     x = radius * Math.cos(angle) + x_orig;
+    //     y = radius * Math.sin(angle) + y_orig;
+    // }
 
-    send(0, 0, sliderpos);
+    sendTilt(sliderpos);
 }
 
 function ontoggleRobotbtn(btn) {
@@ -76,7 +146,7 @@ function ontoggleRobotbtn(btn) {
         btn.classList.remove("btn-success");
         btn.classList.add("btn-danger");
     }
-    console.log(disable)
+    sendMode(disable)
 };
 
 async function onshootbtn(btn) {
@@ -84,6 +154,7 @@ async function onshootbtn(btn) {
         shootnow = true;
         btn.classList.add("disabled");
         shootBtn = btn;
+        sendShoot(shootnow);
     }
 };
 
@@ -187,7 +258,7 @@ function stopDrawing() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     background();
     joystick(width / 2, height / 3);
-    send(0, 0, 0, false, false);
+    sendDrive(0, 0);
 }
 
 function Draw(event) {
@@ -216,6 +287,6 @@ function Draw(event) {
 
         let x_relative = Math.round(x_orig - x);
         let y_relative = Math.round(y_orig - y);
-        send(x_relative, y_relative, sliderpos);
+        sendDrive(x_relative, y_relative);
     }
 }
