@@ -3,7 +3,7 @@ let shootnow = false;
 let shootBtn;
 let sliderpos = 0;
 
-async function sendDrive(x) {
+async function sendDrive(x, y) {
     let data = {
         x: x,
         y: y,
@@ -28,9 +28,9 @@ async function sendDrive(x) {
     // }
 }
 
-async function sendShoot(shootnow) {
+async function sendShoot(shoot) {
     let data = {
-        shoot: shootnow,
+        shoot: shoot,
     };
 
     $.ajax({
@@ -180,9 +180,9 @@ window.addEventListener('load', () => {
     ctx = canvas.getContext('2d');
     resize();
 
-    document.addEventListener('mousedown', startDrawing);
-    document.addEventListener('mouseup', stopDrawing);
-    document.addEventListener('mousemove', Draw);
+    // document.addEventListener('mousedown', startDrawing);
+    // document.addEventListener('mouseup', stopDrawing);
+    // document.addEventListener('mousemove', Draw);
 
     document.addEventListener('touchstart', startDrawing);
     document.addEventListener('touchend', stopDrawing);
@@ -269,7 +269,7 @@ function Draw(event) {
         let x, y;
         let angle = Math.atan2((coord.y - y_orig), (coord.x - x_orig));
 
-        if (Math.abs(coord.x) >= 800) {
+        if (Math.abs(coord.x) >= 600) {
             joystick(x_orig, y_orig);
             return;
         } else if (is_it_in_the_circle()) {
